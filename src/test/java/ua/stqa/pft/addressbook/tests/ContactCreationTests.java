@@ -2,6 +2,7 @@ package ua.stqa.pft.addressbook.tests;
 
 import org.testng.annotations.Test;
 import ua.stqa.pft.addressbook.model.ContactData;
+import ua.stqa.pft.addressbook.model.Groups;
 
 import java.io.File;
 import java.util.List;
@@ -13,6 +14,7 @@ public class ContactCreationTests extends TestBase{
 
     @Test
     public void testContactCreation() {
+        Groups groups = app.db().groups();
         List<ContactData> before = app.contact().getContactList();
         File photo = new File("src/test/resources/cow.png");
         ContactData contact = new ContactData()
@@ -29,7 +31,7 @@ public class ContactCreationTests extends TestBase{
                       .withEmail1("email1@email.com")
                       .withEmail2("email2@email.com")
                       .withEmail3("email3@email.com")
-                      .withPhoto(photo);
+                      .withPhoto(photo).inGroup(groups.iterator().next());
         app.contact().homePage();
         app.goTo().contactPage();
         app.contact().create(contact);
