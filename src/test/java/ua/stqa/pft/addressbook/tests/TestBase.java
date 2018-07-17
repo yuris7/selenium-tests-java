@@ -1,23 +1,24 @@
 package ua.stqa.pft.addressbook.tests;
 
-import org.openqa.selenium.remote.BrowserType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import ua.stqa.pft.addressbook.appmanager.ApplicationManager;
 
 import java.io.IOException;
 
+import static org.openqa.selenium.remote.BrowserType.CHROME;
+
+
 public class TestBase {
 
-    Logger logger = LoggerFactory.getLogger(TestBase.class);
+//    Logger logger = LoggerFactory.getLogger(TestBase.class);
 
     protected static ApplicationManager app;
 
     static {
         try {
-            app = new ApplicationManager(BrowserType.CHROME);
+            app = new ApplicationManager(System.getProperty("browser", CHROME));
         } catch (IOException e) {
             e.printStackTrace();
         }

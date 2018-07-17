@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ApplicationManager {
     WebDriver wd;
-//    private final Properties properties;
+    private final Properties properties;
     private NavigationHelper navigationHelper;
     private GroupHelper groupHelper;
     private SessionHelper sessionHelper;
@@ -23,13 +23,12 @@ public class ApplicationManager {
 
     public ApplicationManager(String browser) throws IOException {
         this.browser = browser;
-//        properties = new Properties();
+        properties = new Properties();
     }
 
     public void init() throws IOException {
-//        String target = System.getProperty("local");
-//        properties.load(new FileReader(
-//                new File(String.format("src/test/resources/&s.properties", target))));
+        String target = System.getProperty("target","local");
+        properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties", target))));
 
         if (browser.equals(BrowserType.CHROME)) {
             wd = new ChromeDriver();
@@ -40,17 +39,16 @@ public class ApplicationManager {
         }
 
         wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-        wd.get("http://localhost:9090/addressbook");
+        wd.get(properties.getProperty("web.baseUrl"));
         groupHelper = new GroupHelper(wd);
         navigationHelper = new NavigationHelper(wd);
         sessionHelper = new SessionHelper(wd);
         contactHelper = new ContactHelper(wd);
-        sessionHelper.login("admin","secret");
+        sessionHelper.login(properties.getProperty("web.admin.login"),
+                properties.getProperty("web.admin.password"));
     }
 
-
     public void stop() {
-
         wd.quit();
     }
 
